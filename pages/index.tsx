@@ -1,8 +1,13 @@
-import type {NextPage} from 'next';
-import {Content} from '../components/home/content';
+import type { NextPage } from 'next';
+import { LoginCard } from '../components/login/login-card';
+import { LoginContainer } from '../components/login/login-container';
 
-const Home: NextPage = () => {
-   return <Content />;
+const Login: NextPage = () => {
+  return (
+    <LoginContainer>
+      <LoginCard />
+    </LoginContainer>
+  );
 };
 
-export default Home;
+export default Login;
