@@ -38,19 +38,31 @@ export const LoginForm = () => {
 
   return (
     <>
-      <Input
+        <Input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         fullWidth
         css={{
-          marginBottom: '1rem',
-          backgroundColor: '#fff',
-          border: '1px solid #dcdcdc',
-          borderRadius: '6px',
+            marginBottom: '1rem',
+            $$inputBorderColor: 'rgba(0, 0, 0, 0.1)', // Very subtle default border
+            $$inputPlaceholderColor: '#999',
+            '& .nextui-input-wrapper': {
+            borderRadius: '6px',
+            boxShadow: 'none',
+            border: '1px solid rgba(0, 0, 0, 0.1)', // Explicit border declaration
+            transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+            },
+            '&:hover .nextui-input-wrapper': {
+            borderColor: 'rgba(0, 0, 0, 0.2)', // Slightly darker on hover
+            },
+            '&:focus-within .nextui-input-wrapper': {
+            borderColor: '#0070f3',
+            boxShadow: '0 0 0 2px rgba(0, 112, 243, 0.2)',
+            },
         }}
-      />
+        />
 
       <Input.Password
         type="password"
@@ -59,10 +71,22 @@ export const LoginForm = () => {
         onChange={(e) => setPassword(e.target.value)}
         fullWidth
         css={{
-          marginBottom: '1rem',
-          backgroundColor: '#fff',
-          border: '1px solid #dcdcdc',
-          borderRadius: '6px',
+            marginBottom: '1rem',
+            $$inputBorderColor: 'rgba(0, 0, 0, 0.1)', // Very subtle default border
+            $$inputPlaceholderColor: '#999',
+            '& .nextui-input-wrapper': {
+            borderRadius: '6px',
+            boxShadow: 'none',
+            border: '1px solid rgba(0, 0, 0, 0.1)', // Explicit border declaration
+            transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+            },
+            '&:hover .nextui-input-wrapper': {
+            borderColor: 'rgba(0, 0, 0, 0.2)', // Slightly darker on hover
+            },
+            '&:focus-within .nextui-input-wrapper': {
+            borderColor: '#0070f3',
+            boxShadow: '0 0 0 2px rgba(0, 112, 243, 0.2)',
+            },
         }}
         helperText={passwordError}
         helperColor="error"
