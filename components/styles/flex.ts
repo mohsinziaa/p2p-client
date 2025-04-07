@@ -56,5 +56,12 @@ export const Flex = styled('div', {
             flexWrap: 'nowrap',
          },
       },
+      gap: {
+         '0': { gap: '$0' },
+         '4': { gap: '$4' },
+         '8': { gap: '$8' },
+         '12': { gap: '$12' },
+         '16': { gap: '$16' },
+       },      
    },
 });
