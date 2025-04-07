@@ -16,14 +16,14 @@ export const LoginForm = () => {
     
     let isValid = true;
     
-    if (!email) {
-      isValid = false;
-    }
+    // if (!email) {
+    //   isValid = false;
+    // }
     
-    if (!password) {
-      setPasswordError('Password is required');
-      isValid = false;
-    }
+    // if (!password) {
+    //   setPasswordError('Password is required');
+    //   isValid = false;
+    // }
     
     if (!isValid) return;
     
@@ -97,7 +97,7 @@ export const LoginForm = () => {
 
       <Button
         onPress={handleLogin}
-        disabled={!email || !password || isLoading}
+        // disabled={!email || !password || isLoading}
         css={{
           backgroundColor: '#0070f3',
           color: '#fff',
