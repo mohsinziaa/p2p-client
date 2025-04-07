@@ -48,7 +48,7 @@ export const Content = () => (
             >
 
             <StatusCard 
-               title="Total Requisitions" 
+               title="Requests" 
                value={125} 
                color="$blue600" 
                iconType="total"

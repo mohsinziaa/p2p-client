@@ -42,12 +42,12 @@ export const StatusCard = ({
   return (
     <Card
       css={{
-        mw: '220px',
+        mw: '200px',
         bg: color,
         borderRadius: '$xl',
         px: '$6',
         flexGrow: 1,
-        minWidth: '160px',
+        minWidth: '140px',
         boxShadow: '$md', // Adds depth
         transition: 'transform 0.2s',
         '&:hover': { transform: 'scale(1.02)' }        
@@ -59,7 +59,7 @@ export const StatusCard = ({
             {displayIcon}
           </Box>
           <Flex direction={'column'}>
-            <Text span css={{ color: 'white' }}>
+            <Text span css={{ color: 'white', paddingBottom: '$3' }}>
               {title}
             </Text>
           </Flex>
