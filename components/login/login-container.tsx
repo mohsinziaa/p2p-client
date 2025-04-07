@@ -5,6 +5,6 @@ export const LoginContainer = styled('div', {
   justifyContent: 'center',
   alignItems: 'center',
   height: '100vh',
-  backgroundColor: '#fafafa',
+  backgroundColor: '$background',
   padding: '0 1rem',
 });

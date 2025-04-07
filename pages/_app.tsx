@@ -24,14 +24,16 @@ function MyApp({Component, pageProps}: AppProps) {
    const isLoginPage = router.pathname === '/';
 
    return (
+
       <NextThemesProvider
-         forcedTheme="light"
-         attribute="class"
-         value={{
-            light: lightTheme.className,
-            dark: darkTheme.className,
-         }}
-      >
+               defaultTheme="light"
+               attribute="class"
+               value={{
+                  light: lightTheme.className,
+                  dark: darkTheme.className,
+               }}
+            >
+
          <NextUIProvider>
             {isLoginPage ? (
                <Component {...pageProps} />
