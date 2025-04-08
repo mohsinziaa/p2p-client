@@ -30,27 +30,27 @@ export const NotificationsDropdown = () => {
                },
             }}
          >
-            <Dropdown.Section title="Notificacions">
+            <Dropdown.Section title="Notifications">
                <Dropdown.Item
                   key="1"
                   showFullDescription
-                  description="Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim."
+                  description="Your requisition status has been updated to 'Pending Approval'."
                >
-                  📣 Edit your information
+                  Requisition Status Updated
                </Dropdown.Item>
                <Dropdown.Item
                   key="2"
                   showFullDescription
-                  description="Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim."
+                  description="You have received a new requisition request. Please review it."
                >
-                  🚀 Say goodbye to paper receipts!
+                  New Requisition Request Received
                </Dropdown.Item>
                <Dropdown.Item
                   key="3"
                   showFullDescription
-                  description="Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim."
+                  description="Unfortunately, your requisition request has been rejected. Please check the comments for further details."
                >
-                  📣 Edit your information
+                  Your requisition was rejected.
                </Dropdown.Item>
             </Dropdown.Section>
          </Dropdown.Menu>

@@ -1,10 +1,37 @@
-import {Avatar, Dropdown, Navbar, Text} from '@nextui-org/react';
-import React from 'react';
-import {DarkModeSwitch} from './darkmodeswitch';
+import React, { Key, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Avatar, Dropdown, Navbar, Text } from '@nextui-org/react';
+import { DarkModeSwitch } from './darkmodeswitch';
+import { Moon } from 'lucide-react';
 
 export const UserDropdown = () => {
+   const router = useRouter();
+   const [isOpen, setIsOpen] = useState(false); // State to control the dropdown open state
+
+   const handleAction = (key: Key) => {
+      const actionKey = key.toString(); // safely convert to string
+      if (actionKey === 'logout') {
+         router.push('/');
+      } else {
+         console.log({ actionKey });
+      }
+   };
+
+   const handleDropdownToggle = (open: boolean) => {
+      setIsOpen(open); // Update state when dropdown open state changes
+   };
+
+   // Force open the dropdown on switch interaction
+   const handleSwitchInteraction = () => {
+      setIsOpen(true); // Manually set the dropdown to be open
+   };
+
    return (
-      <Dropdown placement="bottom-right">
+      <Dropdown
+         placement="bottom-right"
+         isOpen={isOpen} // Make sure the dropdown remains open based on state
+         onOpenChange={handleDropdownToggle} // This handles changes to dropdown state
+      >
          <Navbar.Item>
             <Dropdown.Trigger>
                <Avatar
@@ -12,20 +39,17 @@ export const UserDropdown = () => {
                   as="button"
                   color="secondary"
                   size="md"
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                  src="avatar.png"
                />
             </Dropdown.Trigger>
          </Navbar.Item>
-         <Dropdown.Menu
-            aria-label="User menu actions"
-            onAction={(actionKey) => console.log({actionKey})}
-         >
-            <Dropdown.Item key="profile" css={{height: '$18'}}>
-               <Text b color="inherit" css={{d: 'flex'}}>
+         <Dropdown.Menu aria-label="User menu actions" onAction={handleAction}>
+            <Dropdown.Item key="profile" css={{ height: '$18' }}>
+               <Text b color="inherit" css={{ d: 'flex' }}>
                   Signed in as
                </Text>
-               <Text b color="inherit" css={{d: 'flex'}}>
-                  zoey@example.com
+               <Text b color="inherit" css={{ d: 'flex' }}>
+                  Mohsin Zia
                </Text>
             </Dropdown.Item>
             <Dropdown.Item key="settings" withDivider>
@@ -35,16 +59,30 @@ export const UserDropdown = () => {
             <Dropdown.Item key="analytics" withDivider>
                Analytics
             </Dropdown.Item>
-            <Dropdown.Item key="system">System</Dropdown.Item>
-            <Dropdown.Item key="configurations">Configurations</Dropdown.Item>
-            <Dropdown.Item key="help_and_feedback" withDivider>
+            <Dropdown.Item key="help_and_feedback">
                Help & Feedback
             </Dropdown.Item>
-            <Dropdown.Item key="logout" withDivider color="error">
+            <Dropdown.Item key="logout" color="error">
                Log Out
             </Dropdown.Item>
+
             <Dropdown.Item key="switch" withDivider>
-               <DarkModeSwitch />
+               <div
+                  style={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     justifyContent: 'space-between',
+                     width: '100%',
+                  }}
+               >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                     <Moon size={18} />
+                     <span>Switch Theme</span>
+                  </div>
+                  <div style={{ marginTop: '5px' }}>
+                     <DarkModeSwitch onClick={handleSwitchInteraction} /> {/* Trigger dropdown open */}
+                  </div>
+               </div>
             </Dropdown.Item>
          </Dropdown.Menu>
       </Dropdown>
