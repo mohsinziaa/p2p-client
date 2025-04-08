@@ -1,53 +1,31 @@
-import {styled} from '@nextui-org/react';
+// /components/request-table/table.styled.ts
+import { styled } from '@nextui-org/react';
 
-export const IconButton = styled('button', {
-   'dflex': 'center',
-   'border': 'none',
-   'outline': 'none',
-   'cursor': 'pointer',
-   'padding': '0',
-   'margin': '0',
-   'bg': 'transparent',
-   'transition': '$default',
-   '&:hover': {
-      opacity: '0.8',
-   },
-   '&:active': {
-      opacity: '0.6',
-   },
-});
+type StyledBadgeProps = {
+  type: 'approved' | 'pending' | 'rejected';
+};
 
 export const StyledBadge = styled('span', {
-   display: 'inline-block',
-   textTransform: 'uppercase',
-   padding: '$2 $3',
-   margin: '0 2px',
-   fontSize: '10px',
-   fontWeight: '$bold',
-   borderRadius: '14px',
-   letterSpacing: '0.6px',
-   lineHeight: 1,
-   boxShadow: '1px 2px 5px 0px rgb(0 0 0 / 5%)',
-   alignItems: 'center',
-   alignSelf: 'center',
-   color: '$white',
-   variants: {
-      type: {
-         active: {
-            bg: '$successLight',
-            color: '$successLightContrast',
-         },
-         paused: {
-            bg: '$errorLight',
-            color: '$errorLightContrast',
-         },
-         vacation: {
-            bg: '$warningLight',
-            color: '$warningLightContrast',
-         },
+  display: 'inline-block',
+  textTransform: 'capitalize',
+  padding: '$2 $3',
+  fontSize: '0.75rem',
+  fontWeight: '$bold',
+  borderRadius: '6px',
+  variants: {
+    type: {
+      approved: {
+        backgroundColor: '$green100',
+        color: '$green600',
       },
-   },
-   defaultVariants: {
-      type: 'active',
-   },
+      pending: {
+        backgroundColor: '$yellow100',
+        color: '$yellow600',
+      },
+      rejected: {
+        backgroundColor: '$red100',
+        color: '$red600',
+      },
+    },
+  },
 });
