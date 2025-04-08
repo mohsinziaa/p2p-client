@@ -1,11 +1,15 @@
-// /components/request/content.tsx
 import React from 'react';
-import { Text, Link } from '@nextui-org/react';
+import { Text, Link, Button, Input } from '@nextui-org/react';
 import { Box } from '../styles/box';
 import { Flex } from '../styles/flex';
-import NextLink from 'next/link';
 import { StatusCard } from './card';
 import { PurchaseTable } from '../request-table/table';
+import { DotsIcon } from '../icons/accounts/dots-icon';
+import { ExportIcon } from '../icons/accounts/export-icon';
+import { InfoIcon } from '../icons/accounts/info-icon';
+import { TrashIcon } from '../icons/accounts/trash-icon';
+import { SettingsIcon } from '../icons/sidebar/settings-icon';
+import { AddRequest } from './add-request';
 
 export const Content = () => {
   return (
@@ -20,7 +24,7 @@ export const Content = () => {
               mb: '$4'
             }}
           >
-            Purchase Requests
+            Purchase Status
           </Text>
           <Flex
             css={{
@@ -54,29 +58,45 @@ export const Content = () => {
           mt: '$6'
         }}
       >
-        <Flex justify={'between'} wrap={'wrap'} css={{ mb: '$4' }}>
-          <Text
-            h3
-            css={{
-              textAlign: 'center',
-              '@lg': { textAlign: 'inherit' },
-            }}
+
+        <Box css={{ mb: '$10' }}>
+          <Text h3>Purchase Requests</Text>
+          <Flex
+            css={{gap: '$8'}}
+            align={'center'}
+            justify={'between'}
+            wrap={'wrap'}
           >
-            Purchase Orders
-          </Text>
-          <NextLink href="/accounts">
-            <Link
-              block
-              color="primary"
+            <Flex
               css={{
-                textAlign: 'center',
-                '@lg': { textAlign: 'inherit' },
+                'gap': '$6',
+                'flexWrap': 'wrap',
+                '@sm': {flexWrap: 'nowrap'},
               }}
+              align={'center'}
             >
-              View All
-            </Link>
-          </NextLink>
-        </Flex>
+              <Input
+                css={{width: '100%', maxW: '410px'}}
+                placeholder="Search Requisition"
+              />
+              {/* <Input
+                css={{ width: '40%', maxW: '200px' }}
+                type="date"
+              /> */}
+              <SettingsIcon />
+              <TrashIcon />
+              <InfoIcon />
+              <DotsIcon />
+
+            </Flex>
+            <Flex direction={'row'} css={{gap: '$6'}} wrap={'wrap'}>
+              <AddRequest />
+              <Button auto iconRight={<ExportIcon />}>
+                Export to CSV
+              </Button>
+            </Flex>
+          </Flex>
+        </Box>
 
         <PurchaseTable />
       </Flex>

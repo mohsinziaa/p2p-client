@@ -20,6 +20,7 @@ import {SidebarMenu} from './sidebar-menu';
 import {FilterIcon} from '../icons/sidebar/filter-icon';
 import {useSidebarContext} from '../layout/layout-context';
 import {ChangeLogIcon} from '../icons/sidebar/changelog-icon';
+import {RequestIcon} from '../icons/sidebar/request-icon';
 import {useRouter} from 'next/router';
 
 export const SidebarWrapper = () => {
@@ -58,7 +59,7 @@ export const SidebarWrapper = () => {
                      <SidebarItem
                         isActive={router.pathname === '/request'}
                         title="Request"
-                        icon={<PaymentsIcon />}
+                        icon={<RequestIcon />}
                         href="request"
                      />
                      <SidebarItem
