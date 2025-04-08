@@ -1,90 +1,117 @@
-import {Col, Row, User, Text, Tooltip} from '@nextui-org/react';
+// /components/request-table/render-cell.tsx
 import React from 'react';
-import {DeleteIcon} from '../icons/table/delete-icon';
-import {EditIcon} from '../icons/table/edit-icon';
-import {EyeIcon} from '../icons/table/eye-icon';
-import {users} from './data';
-import {IconButton, StyledBadge} from './table.styled';
+import { Box } from '../styles/box';
+import { Flex } from '../styles/flex';
+import { StyledBadge } from './table.styled';
+import { Item, PurchaseRequest } from './data';
 
-interface Props {
-   user: typeof users[number];
-   columnKey: string | React.Key;
+interface ItemRowProps {
+  item: Item;
+  request: PurchaseRequest;
+  itemIndex: number;
+  totalItems: number;
 }
 
-export const RenderCell = ({user, columnKey}: Props) => {
-   // @ts-ignore
-   const cellValue = user[columnKey];
-   switch (columnKey) {
-      case 'name':
-         return (
-            <User squared src={user.avatar} name={cellValue} css={{p: 0}}>
-               {user.email}
-            </User>
-         );
-      case 'role':
-         return (
-            <Col>
-               <Row>
-                  <Text b size={14} css={{tt: 'capitalize'}}>
-                     {cellValue}
-                  </Text>
-               </Row>
-               <Row>
-                  <Text
-                     b
-                     size={13}
-                     css={{tt: 'capitalize', color: '$accents7'}}
-                  >
-                     {user.team}
-                  </Text>
-               </Row>
-            </Col>
-         );
-      case 'status':
-         return (
-            // @ts-ignore
-            <StyledBadge type={String(user.status)}>{cellValue}</StyledBadge>
-         );
+export const ItemRow: React.FC<ItemRowProps> = ({ item, request, itemIndex, totalItems }) => {
+  return (
+    <Flex
+      css={{
+        padding: '$3',
+        borderBottom: itemIndex < totalItems - 1 ? '1px solid $border' : 'none',
+        alignItems: 'center',
+        fontSize: '$sm'
+      }}
+    >
+      <Box css={{ flex: 0.8, textAlign: 'left', pl: '$2' }}>{request.reqNumber}</Box>
+      <Box css={{ flex: 1, textAlign: 'left' }}>{request.generatedBy}</Box>
+      <Box css={{ flex: 1.5, textAlign: 'left' }}>{item.name}</Box>
+      <Box css={{ flex: 1, textAlign: 'left' }}>{item.category}</Box>
+      <Box css={{ flex: 0.6, textAlign: 'left' }}>{item.quantity}</Box>
+      <Box css={{ flex: 0.8, textAlign: 'left' }}>${item.price}</Box>
+      <Box css={{ flex: 1, textAlign: 'left' }}>{item.supplier}</Box>
+      <Box css={{ flex: 1, textAlign: 'left' }}>{item.deliveryDate}</Box>
+      <Box css={{ flex: 0.8, textAlign: 'left' }}>${item.quantity * item.price}</Box>
+    </Flex>
+  );
+};
 
-      case 'actions':
-         return (
-            <Row
-               justify="center"
-               align="center"
-               css={{'gap': '$8', '@md': {gap: 0}}}
-            >
-               <Col css={{d: 'flex'}}>
-                  <Tooltip content="Details">
-                     <IconButton
-                        onClick={() => console.log('View user', user.id)}
-                     >
-                        <EyeIcon size={20} fill="#979797" />
-                     </IconButton>
-                  </Tooltip>
-               </Col>
-               <Col css={{d: 'flex'}}>
-                  <Tooltip content="Edit user">
-                     <IconButton
-                        onClick={() => console.log('Edit user', user.id)}
-                     >
-                        <EditIcon size={20} fill="#979797" />
-                     </IconButton>
-                  </Tooltip>
-               </Col>
-               <Col css={{d: 'flex'}}>
-                  <Tooltip
-                     content="Delete user"
-                     color="error"
-                     onClick={() => console.log('Delete user', user.id)}
-                  >
-                     <IconButton>
-                        <DeleteIcon size={20} fill="#FF0080" />
-                     </IconButton>
-                  </Tooltip>
-               </Col>
-            </Row>
-         );
-      default:
-         return cellValue;
-   }
+interface RequestRowProps {
+  request: PurchaseRequest;
+  index: number;
+  expanded: boolean;
+  onClick: () => void;
+}
+
+export const RequestRow: React.FC<RequestRowProps> = ({ request, index, expanded, onClick }) => {
+  return (
+    <Flex
+      onClick={onClick}
+      css={{
+        width: '100%',
+        padding: '$4',
+        borderBottom: expanded ? '1px solid $border' : 'none',
+        fontSize: '$sm',
+        cursor: 'pointer',
+        '&:hover': {
+          backgroundColor: '$accents0',
+        },
+      }}
+    >
+      <Box css={{ flex: 1, minWidth: '120px', textAlign: 'left', pl: '$2' }}>{request.reqNumber}</Box>
+      <Box css={{ flex: 1, minWidth: '100px', textAlign: 'left' }}>{request.site}</Box>
+      <Box css={{ flex: 1, minWidth: '120px', textAlign: 'left' }}>{request.dateCreated}</Box>
+      <Box css={{ flex: 0.8, minWidth: '100px', textAlign: 'left' }}>{request.items.length} items</Box>
+      <Box css={{ flex: 0.8, minWidth: '80px', textAlign: 'left' }}>
+        <StyledBadge type={request.status}>
+          {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+        </StyledBadge>
+      </Box>
+    </Flex>
+  );
+};
+
+export const TableHeader: React.FC = () => {
+  return (
+    <Flex
+      css={{
+        backgroundColor: '$accents1',
+        padding: '$4',
+        borderRadius: '$sm $sm 0 0',
+        fontWeight: '$semibold',
+        borderBottom: '1px solid $border',
+        fontSize: '$sm',
+      }}
+    >
+      <Box css={{ flex: 1, minWidth: '120px', textAlign: 'left', pl: '$2' }}>Req Number</Box>
+      <Box css={{ flex: 1, minWidth: '100px', textAlign: 'left' }}>Site</Box>
+      <Box css={{ flex: 1, minWidth: '120px', textAlign: 'left' }}>Date Created</Box>
+      <Box css={{ flex: 0.8, minWidth: '100px', textAlign: 'left' }}>No. of Items</Box>
+      <Box css={{ flex: 0.8, minWidth: '80px', textAlign: 'left', pr: '$9' }}>Status</Box>
+    </Flex>
+  );
+};
+
+export const ItemsTableHeader: React.FC = () => {
+  return (
+    <Flex
+      css={{
+        backgroundColor: '$accents1',
+        padding: '$3',
+        borderRadius: '$sm',
+        fontWeight: '$semibold',
+        mb: '$2',
+        fontSize: '$sm'
+      }}
+    >
+      <Box css={{ flex: 0.8, textAlign: 'left', pl: '$2' }}>Req No.</Box>
+      <Box css={{ flex: 1, textAlign: 'left' }}>Req By</Box>
+      <Box css={{ flex: 1.5, textAlign: 'left' }}>Item Name</Box>
+      <Box css={{ flex: 1, textAlign: 'left' }}>Category</Box>
+      <Box css={{ flex: 0.6, textAlign: 'left' }}>Qty</Box>
+      <Box css={{ flex: 0.8, textAlign: 'left' }}>Unit Price</Box>
+      <Box css={{ flex: 1, textAlign: 'left' }}>Supplier</Box>
+      <Box css={{ flex: 1, textAlign: 'left' }}>Delivery Date</Box>
+      <Box css={{ flex: 0.8, textAlign: 'left' }}>Total</Box>
+    </Flex>
+  );
 };
