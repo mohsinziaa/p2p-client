@@ -1,4 +1,5 @@
-import React from 'react';
+// /components/content.tsx
+import React, { useState } from 'react';
 import { Text, Link, Button, Input } from '@nextui-org/react';
 import { Box } from '../styles/box';
 import { Flex } from '../styles/flex';
@@ -12,6 +13,12 @@ import { SettingsIcon } from '../icons/sidebar/settings-icon';
 import { AddRequest } from './add-request';
 
 export const Content = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearchChange = (e: React.ChangeEvent<any>) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <Box css={{ overflow: 'hidden', height: '100%', px: '$6', '@md': { px: '$12' } }}>
       <Flex direction={'column'} gap="8" css={{ mt: '$6' }}>
@@ -58,7 +65,6 @@ export const Content = () => {
           mt: '$6'
         }}
       >
-
         <Box css={{ mb: '$10' }}>
           <Text h3>Purchase Requests</Text>
           <Flex
@@ -78,16 +84,14 @@ export const Content = () => {
               <Input
                 css={{width: '100%', maxW: '410px'}}
                 placeholder="Search Requisition"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                clearable
               />
-              {/* <Input
-                css={{ width: '40%', maxW: '200px' }}
-                type="date"
-              /> */}
               <SettingsIcon />
               <TrashIcon />
               <InfoIcon />
               <DotsIcon />
-
             </Flex>
             <Flex direction={'row'} css={{gap: '$6'}} wrap={'wrap'}>
               <AddRequest />
@@ -98,7 +102,7 @@ export const Content = () => {
           </Flex>
         </Box>
 
-        <PurchaseTable />
+        <PurchaseTable searchTerm={searchTerm} />
       </Flex>
     </Box>
   );
