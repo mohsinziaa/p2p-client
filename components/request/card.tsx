@@ -54,11 +54,12 @@ export const StatusCard = ({
         mw: '200px',
         bg: color,
         borderRadius: '$xl',
-        px: '$6',
+        px: '$1',
         flexGrow: 1,
-        minWidth: '140px',
+        minWidth: '160px',
         boxShadow: '$md',
         transition: 'transform 0.2s',
+        fontSize: '$sm',
         '&:hover': { 
           transform: 'scale(1.02)',
           cursor: 'pointer'

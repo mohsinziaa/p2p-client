@@ -9,7 +9,7 @@ import { Pagination } from './pagination';
 
 interface PurchaseTableProps {
   searchTerm: string;
-  statusFilter: 'all' | 'approved' | 'pending' | 'hold' | 'rejected';
+  statusFilter: 'all' | 'approved' | 'semi approved' | 'pending' | 'hold' | 'rejected';
 }
 
 export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, statusFilter }) => {
