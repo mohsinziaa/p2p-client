@@ -15,7 +15,7 @@ import { purchaseRequests } from '../request-table/data';
 
 
 // Define a type for possible status filters
-type StatusFilter = 'all' | 'approved' | 'pending' | 'hold' | 'rejected';
+type StatusFilter = 'all' | 'approved' | 'semi approved' |'pending' | 'hold' | 'rejected';
 
 // Calculate the total number of requests (all statuses)
 const totalRequests = purchaseRequests.length;
@@ -86,21 +86,28 @@ export const Content = () => {
             <StatusCard 
               title="Requests" 
               value={totalRequests} 
-              color={statusFilter === 'all' ? '$blue800' : '$blue600'} 
+              color={statusFilter === 'all' ? '$blue700' : '$blue600'} 
               iconType="total" 
               onClick={() => handleStatusClick('all')} 
             />
             <StatusCard 
               title="Approved" 
               value={approvedRequests} 
-              color={statusFilter === 'approved' ? '$green800' : '$green600'} 
+              color={statusFilter === 'approved' ? '$green500' : '$green400'} 
               iconType="approved" 
               onClick={() => handleStatusClick('approved')} 
             />
             <StatusCard 
+              title="Semi Approved" 
+              value={approvedRequests} 
+              color={statusFilter === 'semi approved' ? '$green700' : '$green600'} 
+              iconType="approved" 
+              onClick={() => handleStatusClick('semi approved')} 
+            />
+            <StatusCard 
               title="Pending" 
               value={pendingRequests} 
-              color={statusFilter === 'pending' ? '$yellow800' : '$yellow600'} 
+              color={statusFilter === 'pending' ? '$yellow700' : '$yellow600'} 
               iconType="pending" 
               onClick={() => handleStatusClick('pending')} 
             />
@@ -114,7 +121,7 @@ export const Content = () => {
             <StatusCard 
               title="Rejected" 
               value={rejectedRequests} 
-              color={statusFilter === 'rejected' ? '$red800' : '$red600'} 
+              color={statusFilter === 'rejected' ? '$red500' : '$red400'} 
               iconType="rejected" 
               onClick={() => handleStatusClick('rejected')} 
             />
