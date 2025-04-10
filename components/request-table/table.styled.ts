@@ -23,8 +23,8 @@ export const StyledBadge = styled('span', {
         color: '$yellow600',
       },
       hold: {
-        backgroundColor: '#DD6B20',
-        color: '#FFB74D',
+        backgroundColor: '$yellow100',
+        color: '#DD6B20',
       },
       rejected: {
         backgroundColor: '$red100',

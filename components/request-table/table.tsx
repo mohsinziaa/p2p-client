@@ -46,7 +46,7 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 7;
+  const rowsPerPage = 10;
   const totalPages = Math.ceil(filteredRequests.length / rowsPerPage);
   
   // Reset to first page when search term or status filter changes

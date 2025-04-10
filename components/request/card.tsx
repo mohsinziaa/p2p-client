@@ -43,7 +43,6 @@ export const StatusCard = ({
 
   // Add this handler to ensure clicks work
   const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling
     if (onClick) {
       onClick();
     }

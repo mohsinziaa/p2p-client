@@ -40,7 +40,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         alignItems: 'center',
         py: '$4',
         px: '$8',
-        backgroundColor: '$accents0',
+        backgroundColor: '$accents1',
         border: '1px solid $border',
         borderTop: 'none',
         borderRadius: '0 0 $lg $lg',
