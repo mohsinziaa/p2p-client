@@ -11,9 +11,34 @@ import { InfoIcon } from '../icons/accounts/info-icon';
 import { TrashIcon } from '../icons/accounts/trash-icon';
 import { SettingsIcon } from '../icons/sidebar/settings-icon';
 import { AddRequest } from './add-request';
+import { purchaseRequests } from '../request-table/data';
+
 
 // Define a type for possible status filters
 type StatusFilter = 'all' | 'approved' | 'pending' | 'hold' | 'rejected';
+
+// Calculate the total number of requests (all statuses)
+const totalRequests = purchaseRequests.length;
+
+// Calculate approved requests
+const approvedRequests = purchaseRequests.filter(
+  request => request.status === 'approved'
+).length;
+
+// Calculate pending requests
+const pendingRequests = purchaseRequests.filter(
+  request => request.status === 'pending'
+).length;
+
+// Calculate on hold requests
+const onHoldRequests = purchaseRequests.filter(
+  request => request.status === 'hold'
+).length;
+
+// Calculate rejected requests
+const rejectedRequests = purchaseRequests.filter(
+  request => request.status === 'rejected'
+).length;
 
 export const Content = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -60,35 +85,35 @@ export const Content = () => {
           >
             <StatusCard 
               title="Requests" 
-              value={125} 
+              value={totalRequests} 
               color={statusFilter === 'all' ? '$blue800' : '$blue600'} 
               iconType="total" 
               onClick={() => handleStatusClick('all')} 
             />
             <StatusCard 
               title="Approved" 
-              value={89} 
+              value={approvedRequests} 
               color={statusFilter === 'approved' ? '$green800' : '$green600'} 
               iconType="approved" 
               onClick={() => handleStatusClick('approved')} 
             />
             <StatusCard 
               title="Pending" 
-              value={23} 
+              value={pendingRequests} 
               color={statusFilter === 'pending' ? '$yellow800' : '$yellow600'} 
               iconType="pending" 
               onClick={() => handleStatusClick('pending')} 
             />
             <StatusCard 
               title="On Hold" 
-              value={13} 
-              color={statusFilter === 'hold' ? '#B7560F' : '#DD6B20'} 
+              value={onHoldRequests} 
+              color={statusFilter === 'hold' ? '#DD6B20' : '#B7560F'} 
               iconType="hold" 
               onClick={() => handleStatusClick('hold')} 
             />
             <StatusCard 
               title="Rejected" 
-              value={13} 
+              value={rejectedRequests} 
               color={statusFilter === 'rejected' ? '$red800' : '$red600'} 
               iconType="rejected" 
               onClick={() => handleStatusClick('rejected')} 
