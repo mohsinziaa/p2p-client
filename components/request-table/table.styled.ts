@@ -2,7 +2,7 @@
 import { styled } from '@nextui-org/react';
 
 type StyledBadgeProps = {
-  type: 'approved' | 'pending' | 'rejected';
+  type: 'approved' | 'pending' | 'rejected' | 'hold';
 };
 
 export const StyledBadge = styled('span', {
@@ -21,6 +21,10 @@ export const StyledBadge = styled('span', {
       pending: {
         backgroundColor: '$yellow100',
         color: '$yellow600',
+      },
+      hold: {
+        backgroundColor: '#DD6B20',
+        color: '#FFB74D',
       },
       rejected: {
         backgroundColor: '$red100',

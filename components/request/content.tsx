@@ -12,11 +12,22 @@ import { TrashIcon } from '../icons/accounts/trash-icon';
 import { SettingsIcon } from '../icons/sidebar/settings-icon';
 import { AddRequest } from './add-request';
 
+// Define a type for possible status filters
+type StatusFilter = 'all' | 'approved' | 'pending' | 'hold' | 'rejected';
+
 export const Content = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  // Add state for status filter
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
 
   const handleSearchChange = (e: React.ChangeEvent<any>) => {
     setSearchTerm(e.target.value);
+  };
+
+  // Update the status click handler to set the filter
+  const handleStatusClick = (status: StatusFilter) => {
+    console.log(`Status card clicked: ${status}`);
+    setStatusFilter(status);
   };
 
   return (
@@ -47,15 +58,46 @@ export const Content = () => {
               }
             }}
           >
-            <StatusCard title="Requests" value={125} color="$blue600" iconType="total" />
-            <StatusCard title="Approved" value={89} color="$green600" iconType="approved" />
-            <StatusCard title="Pending" value={23} color="$yellow600" iconType="pending" />
-            <StatusCard title="On Hold" value={13} color="#DD6B20" iconType="hold" />
-            <StatusCard title="Rejected" value={13} color="$red600" iconType="rejected" />
+            <StatusCard 
+              title="Requests" 
+              value={125} 
+              color={statusFilter === 'all' ? '$blue800' : '$blue600'} 
+              iconType="total" 
+              onClick={() => handleStatusClick('all')} 
+            />
+            <StatusCard 
+              title="Approved" 
+              value={89} 
+              color={statusFilter === 'approved' ? '$green800' : '$green600'} 
+              iconType="approved" 
+              onClick={() => handleStatusClick('approved')} 
+            />
+            <StatusCard 
+              title="Pending" 
+              value={23} 
+              color={statusFilter === 'pending' ? '$yellow800' : '$yellow600'} 
+              iconType="pending" 
+              onClick={() => handleStatusClick('pending')} 
+            />
+            <StatusCard 
+              title="On Hold" 
+              value={13} 
+              color={statusFilter === 'hold' ? '#B7560F' : '#DD6B20'} 
+              iconType="hold" 
+              onClick={() => handleStatusClick('hold')} 
+            />
+            <StatusCard 
+              title="Rejected" 
+              value={13} 
+              color={statusFilter === 'rejected' ? '$red800' : '$red600'} 
+              iconType="rejected" 
+              onClick={() => handleStatusClick('rejected')} 
+            />
           </Flex>       
         </Box>
       </Flex>
 
+      {/* Rest of the content remains the same */}
       <Flex
         direction={'column'}
         justify={'center'}
@@ -102,7 +144,8 @@ export const Content = () => {
           </Flex>
         </Box>
 
-        <PurchaseTable searchTerm={searchTerm} />
+        {/* Pass the status filter to the table component */}
+        <PurchaseTable searchTerm={searchTerm} statusFilter={statusFilter} />
       </Flex>
     </Box>
   );

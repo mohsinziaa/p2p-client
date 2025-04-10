@@ -9,39 +9,50 @@ import { Pagination } from './pagination';
 
 interface PurchaseTableProps {
   searchTerm: string;
+  statusFilter: 'all' | 'approved' | 'pending' | 'hold' | 'rejected';
 }
 
-export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm }) => {
+export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, statusFilter }) => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const mainTableRef = useRef<HTMLDivElement | null>(null);
   const itemTablesRef = useRef<Array<HTMLDivElement | null>>([]);
   
-  // Filter requests based on search term
+  // Filter requests based on search term and status filter
   const filteredRequests = useMemo(() => {
-    if (!searchTerm) return purchaseRequests;
+    let filtered = purchaseRequests;
     
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    return purchaseRequests.filter(request => 
-      request.reqNumber.toLowerCase().includes(lowerCaseSearchTerm) ||
-      request.site.toLowerCase().includes(lowerCaseSearchTerm) ||
-      request.generatedBy.toLowerCase().includes(lowerCaseSearchTerm) ||
-      request.items.some(item => 
-        item.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-        item.category.toLowerCase().includes(lowerCaseSearchTerm) ||
-        item.supplier.toLowerCase().includes(lowerCaseSearchTerm)
-      )
-    );
-  }, [searchTerm]);
+    // Apply status filter first
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(request => request.status === statusFilter);
+    }
+    
+    // Then apply search filter if there is one
+    if (searchTerm) {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
+      filtered = filtered.filter(request => 
+        request.reqNumber.toLowerCase().includes(lowerCaseSearchTerm) ||
+        request.site.toLowerCase().includes(lowerCaseSearchTerm) ||
+        request.generatedBy.toLowerCase().includes(lowerCaseSearchTerm) ||
+        request.items.some(item => 
+          item.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+          item.category.toLowerCase().includes(lowerCaseSearchTerm) ||
+          item.supplier.toLowerCase().includes(lowerCaseSearchTerm)
+        )
+      );
+    }
+    
+    return filtered;
+  }, [searchTerm, statusFilter]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 7;
   const totalPages = Math.ceil(filteredRequests.length / rowsPerPage);
   
-  // Reset to first page when search term changes
+  // Reset to first page when search term or status filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm]);
+  }, [searchTerm, statusFilter]);
 
   // Get current page data
   const indexOfLastRequest = currentPage * rowsPerPage;
@@ -199,7 +210,11 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm }) => {
               alignItems: 'center',
               borderBottom: '1px solid $border'
             }}>
-              <Text css={{ color: '$accents7' }}>No matching requests found</Text>
+              <Text css={{ color: '$accents7' }}>
+                {statusFilter !== 'all' 
+                  ? `No ${statusFilter} requests found`
+                  : 'No matching requests found'}
+              </Text>
             </Flex>
           )}
         </Box>
