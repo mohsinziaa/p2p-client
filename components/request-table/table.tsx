@@ -3,8 +3,8 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Text, Collapse } from '@nextui-org/react';
 import { Box } from '../styles/box';
 import { Flex } from '../styles/flex';
-import { purchaseRequests } from './data';
-import { TableHeader, RequestRow, ItemsTableHeader, ItemRow } from './render-cell';
+import { requestHeaders } from './data';
+import { TableHeader, RequestHeaderRow, RequestLinesTableHeader, RequestLineRow } from './render-cell';
 import { Pagination } from './pagination';
 
 interface PurchaseTableProps {
@@ -15,28 +15,26 @@ interface PurchaseTableProps {
 export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, statusFilter }) => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const mainTableRef = useRef<HTMLDivElement | null>(null);
-  const itemTablesRef = useRef<Array<HTMLDivElement | null>>([]);
+  const lineTablesRef = useRef<Array<HTMLDivElement | null>>([]);
   
-  // Filter requests based on search term and status filter
   const filteredRequests = useMemo(() => {
-    let filtered = purchaseRequests;
+    let filtered = requestHeaders;
     
-    // Apply status filter first
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(request => request.status === statusFilter);
+      filtered = filtered.filter(request => request.requestStatus === statusFilter);
     }
     
-    // Then apply search filter if there is one
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       filtered = filtered.filter(request => 
-        request.reqNumber.toLowerCase().includes(lowerCaseSearchTerm) ||
-        request.site.toLowerCase().includes(lowerCaseSearchTerm) ||
-        request.generatedBy.toLowerCase().includes(lowerCaseSearchTerm) ||
-        request.items.some(item => 
-          item.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-          item.category.toLowerCase().includes(lowerCaseSearchTerm) ||
-          item.supplier.toLowerCase().includes(lowerCaseSearchTerm)
+        request.requestNumber.toLowerCase().includes(lowerCaseSearchTerm) ||
+        request.siteId.toLowerCase().includes(lowerCaseSearchTerm) ||
+        request.createdBy.toLowerCase().includes(lowerCaseSearchTerm) ||
+        request.remarks.toLowerCase().includes(lowerCaseSearchTerm) ||
+        request.requestLines.some(line => 
+          line.itemName.toLowerCase().includes(lowerCaseSearchTerm) ||
+          line.itemId.toLowerCase().includes(lowerCaseSearchTerm) ||
+          line.remarks.toLowerCase().includes(lowerCaseSearchTerm)
         )
       );
     }
@@ -44,17 +42,14 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
     return filtered;
   }, [searchTerm, statusFilter]);
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const totalPages = Math.ceil(filteredRequests.length / rowsPerPage);
   
-  // Reset to first page when search term or status filter changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, statusFilter]);
 
-  // Get current page data
   const indexOfLastRequest = currentPage * rowsPerPage;
   const indexOfFirstRequest = indexOfLastRequest - rowsPerPage;
   const currentRequests = filteredRequests.slice(indexOfFirstRequest, indexOfLastRequest);
@@ -70,20 +65,18 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
     setExpandedRow(null);
     setCurrentPage(pageNumber);
     
-    // Scroll to top of table when page changes
     if (mainTableRef.current) {
       mainTableRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  // Sync horizontal scrolling between main table and item tables
   useEffect(() => {
     const mainTable = mainTableRef.current;
     if (!mainTable) return;
 
     const handleScroll = () => {
       const scrollLeft = mainTable.scrollLeft;
-      itemTablesRef.current.forEach(table => {
+      lineTablesRef.current.forEach(table => {
         if (table) table.scrollLeft = scrollLeft;
       });
     };
@@ -105,7 +98,6 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
       boxShadow: '$sm',
       overflow: 'hidden',
     }}>
-      {/* Main table container */}
       <Box
         ref={mainTableRef}
         css={{
@@ -128,7 +120,7 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
           },
         }}
       >
-        <Box css={{ minWidth: '750px' }}>
+        <Box css={{ minWidth: '1100px' }}>
           <TableHeader />
 
           {currentRequests.length > 0 ? (
@@ -136,16 +128,13 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
               const absoluteIndex = indexOfFirstRequest + index;
               return (
                 <Collapse
-                  key={`${request.reqNumber}-${absoluteIndex}`}
+                  key={`${request.requestNumber}-${absoluteIndex}`}
                   title={
-                    <RequestRow
+                    <RequestHeaderRow
                       request={request}
                       index={index}
                       expanded={expandedRow === absoluteIndex}
-                      onClick={() => {
-                        console.log('Request status:', request.status); // Add this line
-                        toggleRow(index);
-                      }}                    
+                      onClick={() => toggleRow(index)}                    
                     />
                   }
                   expanded={expandedRow === absoluteIndex}
@@ -172,11 +161,11 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
                       fontSize: '$sm',
                       color: '$accents7',
                     }}>
-                      Items
+                      Request Lines
                     </Text>
                     <Box 
                       ref={(el: HTMLDivElement | null) => {
-                        itemTablesRef.current[index] = el;
+                        lineTablesRef.current[index] = el;
                       }}
                       css={{ 
                         overflowX: 'auto',
@@ -189,15 +178,15 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
                         },
                       }}
                     >
-                      <Box css={{ minWidth: '900px' }}>
-                        <ItemsTableHeader />
-                        {request.items.map((item, itemIndex) => (
-                          <ItemRow 
-                            key={`${item.name}-${itemIndex}`}
-                            item={item} 
+                      <Box css={{ minWidth: '800px' }}>
+                        <RequestLinesTableHeader />
+                        {request.requestLines.map((line, lineIndex) => (
+                          <RequestLineRow 
+                            key={`${line.itemId}-${lineIndex}`}
+                            line={line} 
                             request={request} 
-                            itemIndex={itemIndex} 
-                            totalItems={request.items.length} 
+                            lineIndex={lineIndex} 
+                            totalLines={request.requestLines.length} 
                           />
                         ))}
                       </Box>
@@ -223,7 +212,6 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
         </Box>
       </Box>
       
-      {/* Pagination component - only show if there are results */}
       {filteredRequests.length > 0 && (
         <Pagination
           currentPage={currentPage}
