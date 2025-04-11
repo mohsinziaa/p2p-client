@@ -11,50 +11,46 @@ import { InfoIcon } from '../icons/accounts/info-icon';
 import { TrashIcon } from '../icons/accounts/trash-icon';
 import { SettingsIcon } from '../icons/sidebar/settings-icon';
 import { AddRequest } from './add-request';
-import { purchaseRequests } from '../request-table/data';
+import { requestHeaders } from '../request-table/data';
 
-
-// Define a type for possible status filters
-type StatusFilter = 'all' | 'approved' | 'semi-approved' |'pending' | 'hold' | 'rejected';
+type StatusFilter = 'all' | 'approved' | 'semi-approved' | 'pending' | 'hold' | 'rejected';
 
 // Calculate the total number of requests (all statuses)
-const totalRequests = purchaseRequests.length;
+const totalRequests = requestHeaders.length;
 
 // Calculate approved requests
-const approvedRequests = purchaseRequests.filter(
-  request => request.status === 'approved'
+const approvedRequests = requestHeaders.filter(
+  request => request.requestStatus === 'approved'
 ).length;
 
 // Calculate pending requests
-const pendingRequests = purchaseRequests.filter(
-  request => request.status === 'pending'
+const pendingRequests = requestHeaders.filter(
+  request => request.requestStatus === 'pending'
 ).length;
 
 // Calculate on hold requests
-const onHoldRequests = purchaseRequests.filter(
-  request => request.status === 'hold'
+const onHoldRequests = requestHeaders.filter(
+  request => request.requestStatus === 'hold'
 ).length;
 
 // Calculate rejected requests
-const rejectedRequests = purchaseRequests.filter(
-  request => request.status === 'rejected'
+const rejectedRequests = requestHeaders.filter(
+  request => request.requestStatus === 'rejected'
 ).length;
 
 // Calculate semi approved requests
-const semiApprovedRequests = purchaseRequests.filter(
-  request => request.status === 'semi-approved'
+const semiApprovedRequests = requestHeaders.filter(
+  request => request.requestStatus === 'semi-approved'
 ).length;
 
 export const Content = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  // Add state for status filter
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
 
   const handleSearchChange = (e: React.ChangeEvent<any>) => {
     setSearchTerm(e.target.value);
   };
 
-  // Update the status click handler to set the filter
   const handleStatusClick = (status: StatusFilter) => {
     console.log(`Status card clicked: ${status}`);
     setStatusFilter(status);
@@ -134,7 +130,6 @@ export const Content = () => {
         </Box>
       </Flex>
 
-      {/* Rest of the content remains the same */}
       <Flex
         direction={'column'}
         justify={'center'}
@@ -180,8 +175,6 @@ export const Content = () => {
             </Flex>
           </Flex>
         </Box>
-
-        {/* Pass the status filter to the table component */}
         <PurchaseTable searchTerm={searchTerm} statusFilter={statusFilter} />
       </Flex>
     </Box>
