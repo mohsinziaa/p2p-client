@@ -9,7 +9,7 @@ import { Pagination } from './pagination';
 
 interface PurchaseTableProps {
   searchTerm: string;
-  statusFilter: 'all' | 'approved' | 'semi approved' | 'pending' | 'hold' | 'rejected';
+  statusFilter: 'all' | 'approved' | 'semi-approved' | 'pending' | 'hold' | 'rejected';
 }
 
 export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, statusFilter }) => {
@@ -142,7 +142,10 @@ export const PurchaseTable: React.FC<PurchaseTableProps> = ({ searchTerm, status
                       request={request}
                       index={index}
                       expanded={expandedRow === absoluteIndex}
-                      onClick={() => toggleRow(index)}
+                      onClick={() => {
+                        console.log('Request status:', request.status); // Add this line
+                        toggleRow(index);
+                      }}                    
                     />
                   }
                   expanded={expandedRow === absoluteIndex}

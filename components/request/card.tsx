@@ -54,9 +54,9 @@ export const StatusCard = ({
         mw: '200px',
         bg: color,
         borderRadius: '$xl',
-        px: '$1',
+        px: '$0',
         flexGrow: 1,
-        minWidth: '160px',
+        minWidth: '130px',
         boxShadow: '$md',
         transition: 'transform 0.2s',
         fontSize: '$sm',
@@ -65,8 +65,8 @@ export const StatusCard = ({
           cursor: 'pointer'
         }        
       }}
-      onClick={handleClick} // Use our custom handler
-      isPressable // Add this NextUI prop to ensure card is clickable
+      onClick={handleClick} 
+      isPressable
     >
       <Card.Body css={{ 
         paddingTop: '$10', 
